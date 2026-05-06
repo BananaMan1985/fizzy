@@ -88,25 +88,29 @@
   }
 
   lexxy-link-dropdown {
-    --lexxy-toolbar-spacing: 1.5ch;
+    [data-dropdown-panel] {
+      --lexxy-toolbar-spacing: 1.5ch;
 
-    .lexxy-editor__toolbar-button {
-      border-radius: 99rem;
+      .lexxy-editor__toolbar-button {
+        border-radius: 99rem;
 
-      @media(any-hover: hover) {
-        &:hover {
-          filter: brightness(0.9);
-          opacity: 1;
+        @media(any-hover: hover) {
+          &:hover {
+            filter: brightness(0.9);
+            opacity: 1;
+          }
         }
-      }
 
-      &[type="submit"],
-      &[type="submit"]:hover {
-        background-color: var(--color-link);
-      }
+        &[value="link"],
+        &[value="link"]:hover {
+          background-color: var(--lexxy-color-blue);
+          border-color: transparent;
+          color: var(--color-white);
+        }
 
-      &[type="button"] {
-        border: 1px solid var(--color-ink-light);
+        &[type="button"] {
+          border: 1px solid var(--color-ink-light);
+        }
       }
     }
   }
