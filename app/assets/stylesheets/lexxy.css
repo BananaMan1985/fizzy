@@ -67,9 +67,10 @@
 
   .lexxy-editor__toolbar-button {
     background: transparent;
+    color: currentColor;
 
     &[aria-pressed="true"],
-    [open] > & {
+    &[aria-expanded="true"] {
       background-color: oklch(var(--lch-blue-medium) / 20%);
     }
 
