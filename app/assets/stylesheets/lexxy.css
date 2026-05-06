@@ -80,8 +80,8 @@
     }
   }
 
-  .lexxy-editor__toolbar-dropdown--chevron {
-    summary:after {
+  .lexxy-editor__toolbar-button--chevron {
+    &:after {
       block-size: 0.3rem;
       inline-size: 0.3rem;
     }
