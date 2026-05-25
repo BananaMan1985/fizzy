@@ -17,7 +17,7 @@ ssh:
 # Automatic SSL
 proxy:
   ssl: true                # Set this to false if you *don't* want SSL
-  host: fizzy.saganpassport.com
+  host: fizzy.157.245.91.76.sslip.io
 
 # Your application configuration (secrets come from .kamal/secrets).
 env:
@@ -28,8 +28,8 @@ env:
     - SMTP_USERNAME
     - SMTP_PASSWORD
   clear:
-    BASE_URL: https://fizzy.saganpassport.com
-    MAILER_FROM_ADDRESS: Fizzy <support@saganpassport.com>
+    BASE_URL: https://fizzy.157.245.91.76.sslip.io
+    MAILER_FROM_ADDRESS: Fizzy <no-reply@fizzy.157.245.91.76.sslip.io>
     SMTP_ADDRESS: "" # Set this when SMTP credentials are available.
     MULTI_TENANT: false # Set to true to allow multiple accounts to sign up
     SOLID_QUEUE_IN_PUMA: true # Run background jobs in the app container
