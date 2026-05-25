@@ -40,4 +40,5 @@
 /config/master.key
 
 /config/credentials/*.key
+.kamal/secrets
 .DS_Store
