@@ -29,9 +29,12 @@ env:
     - SMTP_PASSWORD
   clear:
     BASE_URL: https://fizzy.157.245.91.76.sslip.io
-    MAILER_FROM_ADDRESS: Fizzy <no-reply@fizzy.157.245.91.76.sslip.io>
+    MAILER_FROM_ADDRESS: Fizzy <fizzy@remotetalentevent.com>
     ALLOWED_EMAIL_DOMAIN: getsagan.com
-    SMTP_ADDRESS: "" # Set this when SMTP credentials are available.
+    SMTP_ADDRESS: smtp.resend.com
+    SMTP_PORT: 2465
+    SMTP_TLS: true
+    SMTP_DOMAIN: remotetalentevent.com
     MULTI_TENANT: true # Set to true to allow multiple accounts to sign up
     SOLID_QUEUE_IN_PUMA: true # Run background jobs in the app container
 
