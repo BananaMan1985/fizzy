@@ -66,4 +66,12 @@ module SessionTestHelper
   ensure
     Account.multi_tenant = previous
   end
+
+  def with_allowed_email_domain(domain)
+    previous = Identity.allowed_email_domain
+    Identity.allowed_email_domain = domain
+    yield
+  ensure
+    Identity.allowed_email_domain = previous
+  end
 end

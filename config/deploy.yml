@@ -30,8 +30,9 @@ env:
   clear:
     BASE_URL: https://fizzy.157.245.91.76.sslip.io
     MAILER_FROM_ADDRESS: Fizzy <no-reply@fizzy.157.245.91.76.sslip.io>
+    ALLOWED_EMAIL_DOMAIN: getsagan.com
     SMTP_ADDRESS: "" # Set this when SMTP credentials are available.
-    MULTI_TENANT: false # Set to true to allow multiple accounts to sign up
+    MULTI_TENANT: true # Set to true to allow multiple accounts to sign up
     SOLID_QUEUE_IN_PUMA: true # Run background jobs in the app container
 
 

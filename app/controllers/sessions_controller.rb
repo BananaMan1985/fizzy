@@ -64,9 +64,11 @@ class SessionsController < ApplicationController
         magic_link = signup.create_identity
         redirect_to_session_magic_link magic_link
       else
+        message = signup.errors.full_messages.to_sentence.presence || "Something went wrong"
+
         respond_to do |format|
-          format.html { redirect_to new_session_path, alert: "Something went wrong" }
-          format.json { render json: { message: "Something went wrong" }, status: :unprocessable_entity }
+          format.html { redirect_to new_session_path, alert: message }
+          format.json { render json: { message: message }, status: :unprocessable_entity }
         end
       end
     end

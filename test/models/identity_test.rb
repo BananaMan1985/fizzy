@@ -30,6 +30,21 @@ class IdentityTest < ActiveSupport::TestCase
     end
   end
 
+  test "email address allows configured domain" do
+    with_allowed_email_domain "getsagan.com" do
+      assert_predicate Identity.new(email_address: "person@getsagan.com"), :valid?
+    end
+  end
+
+  test "email address rejects addresses outside configured domain" do
+    with_allowed_email_domain "getsagan.com" do
+      identity = Identity.new(email_address: "person@example.com")
+
+      assert_not identity.valid?
+      assert_includes identity.errors[:email_address], "must be a getsagan.com address"
+    end
+  end
+
   test "join" do
     identity = identities(:david)
     account = accounts(:initech)

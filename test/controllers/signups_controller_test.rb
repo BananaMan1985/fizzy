@@ -34,6 +34,40 @@ class SignupsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create allows configured email domain" do
+    email_address = "newuser-#{SecureRandom.hex(6)}@getsagan.com"
+
+    with_allowed_email_domain "getsagan.com" do
+      untenanted do
+        assert_difference -> { Identity.count }, +1 do
+          assert_difference -> { MagicLink.count }, +1 do
+            post signup_path, params: { signup: { email_address: email_address } }
+          end
+        end
+
+        assert_redirected_to session_magic_link_path
+      end
+    end
+  end
+
+  test "create rejects email outside configured domain" do
+    email_address = "newuser-#{SecureRandom.hex(6)}@example.com"
+
+    with_allowed_email_domain "getsagan.com" do
+      without_action_dispatch_exception_handling do
+        untenanted do
+          assert_no_difference -> { Identity.count } do
+            assert_no_difference -> { MagicLink.count } do
+              post signup_path, params: { signup: { email_address: email_address } }
+            end
+          end
+
+          assert_response :unprocessable_entity
+        end
+      end
+    end
+  end
+
   test "create with invalid email address" do
     without_action_dispatch_exception_handling do
       untenanted do

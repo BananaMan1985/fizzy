@@ -7,6 +7,7 @@ class Signup
   attr_reader :account, :user
 
   validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }, on: :identity_creation
+  validate :email_address_allowed_domain, on: :identity_creation
   validates :full_name, :identity, presence: true, on: :completion
   validates :full_name, length: { maximum: 240 }
 
@@ -47,6 +48,12 @@ class Signup
     # Override to customize the handling of external accounts associated to the account.
     def create_tenant
       nil
+    end
+
+    def email_address_allowed_domain
+      unless Identity.email_address_allowed?(email_address)
+        errors.add :email_address, "must be a #{Identity.allowed_email_domain} address"
+      end
     end
 
     # Override to inject custom handling for account creation errors

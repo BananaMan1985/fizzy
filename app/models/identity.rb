@@ -1,6 +1,8 @@
 class Identity < ApplicationRecord
   include Joinable, Transferable
 
+  cattr_accessor :allowed_email_domain, default: nil
+
   has_passkeys name: :email_address, display_name: -> { Current.user&.name || email_address }
 
   has_many :access_tokens, dependent: :destroy
@@ -14,7 +16,12 @@ class Identity < ApplicationRecord
   before_destroy :deactivate_users, prepend: true
 
   validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validate :email_address_allowed_domain
   normalizes :email_address, with: ->(value) { value.strip.downcase.presence }
+
+  def self.email_address_allowed?(email_address)
+    allowed_email_domain.blank? || email_address.to_s.downcase.end_with?("@#{allowed_email_domain.downcase}")
+  end
 
   def self.find_by_permissable_access_token(token, method:)
     if (access_token = AccessToken.find_by(token: token)) && access_token.allows?(method)
@@ -35,6 +42,12 @@ class Identity < ApplicationRecord
   end
 
   private
+    def email_address_allowed_domain
+      unless self.class.email_address_allowed?(email_address)
+        errors.add :email_address, "must be a #{self.class.allowed_email_domain} address"
+      end
+    end
+
     def deactivate_users
       users.find_each(&:deactivate)
     end

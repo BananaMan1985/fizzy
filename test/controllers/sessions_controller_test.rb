@@ -45,6 +45,38 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create for a new user allows configured email domain" do
+    with_allowed_email_domain "getsagan.com" do
+      untenanted do
+        assert_difference -> { MagicLink.count }, +1 do
+          assert_difference -> { Identity.count }, +1 do
+            post session_path,
+              params: { email_address: "nonexistent-#{SecureRandom.hex(6)}@getsagan.com" }
+          end
+        end
+
+        assert_redirected_to session_magic_link_path
+        assert MagicLink.last.for_sign_up?
+      end
+    end
+  end
+
+  test "create for a new user rejects email outside configured domain" do
+    with_allowed_email_domain "getsagan.com" do
+      untenanted do
+        assert_no_difference -> { MagicLink.count } do
+          assert_no_difference -> { Identity.count } do
+            post session_path,
+              params: { email_address: "nonexistent-#{SecureRandom.hex(6)}@example.com" }
+          end
+        end
+
+        assert_redirected_to new_session_path
+        assert_equal "Email address must be a getsagan.com address", flash[:alert]
+      end
+    end
+  end
+
   test "create for a new user when single tenant mode already has a tenant" do
     with_multi_tenant_mode(false) do
       untenanted do
